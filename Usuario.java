@@ -1,4 +1,4 @@
-package Biblioteca;
+package fila;
 import java.util.ArrayList;
 import java.util.Date;
 public class Usuario {
@@ -6,14 +6,7 @@ public class Usuario {
     ArrayList<String> livroPosse = new ArrayList(5);
     Date dataNascimento;
 
-    public String cadastro;{
-
-
-    };
-
-    public String login;{
-
-    }
+    
 
     public String mostrarInfo;{
 
