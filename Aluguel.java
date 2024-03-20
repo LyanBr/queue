@@ -1,6 +1,6 @@
 package fila;
 import java.util.Date;
-import java.util.Queue;
+
 public class Aluguel {
     private Usuario usuario;
     private Livro livro;
@@ -18,23 +18,21 @@ public class Aluguel {
         this.multaDiaria = 5.0f; 
         this.multaTotal = 0.0f;
     }
-    public void alugar(Livro livro, Usuario usuario){
-        if (disponibilidadelivro(livro)) {
-            livro.alugar("alugar", usuario);
-        } else {
-            livro.addfila(usuario);
-        }
 
-    }
-    public void devolver(Usuario usuario, Livro livro){
-      livro.alugar("devolver", usuario);
-    }
-    public boolean disponibilidadelivro(Livro livro){
-        if (livro.quantidadelivre > 0) {
-            return true;
-        }else{
-            return false;
+    public void alugarLivro(Livro livro, Usuario usuario){
+        if (disponibilidadeLivro(livro)) {
+            livro.alugarLivro("alugar", usuario);
+        } else {
+            livro.addFila(usuario);
         }
+    }
+
+    public void devolverLivro(Usuario usuario, Livro livro){
+        livro.alugarLivro("devolver", usuario);
+    }
+
+    public boolean disponibilidadeLivro(Livro livro){
+        return livro.getQuantidadeLivre() > 0;
     }
 
     public void calcularMulta() {
@@ -52,5 +50,5 @@ public class Aluguel {
     public float getMultaTotal() {
         return multaTotal;
     }
-
 }
+

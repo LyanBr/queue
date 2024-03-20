@@ -1,58 +1,62 @@
 package fila;
-import java.util.Scanner;
 import java.util.Queue;
-import java.util.ArrayList;
+import java.util.LinkedList;
+
 public class Livro {
     String titulo, autor;
-    int quantidadetotal,quantidadelivre;
-    Queue filaaluguel;
-    ArrayList listaalugado;
+    int quantidadeTotal, quantidadeLivre;
+    Queue<Usuario> filaAluguel = new LinkedList<>();
+    
     public String getTitulo() {
         return titulo;
     }
+    
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
+    
     public String getAutor() {
         return autor;
     }
+    
     public void setAutor(String autor) {
         this.autor = autor;
     }
-    public int getQuantidadetotal() {
-        return quantidadetotal;
+    
+    public int getQuantidadeTotal() {
+        return quantidadeTotal;
     }
-    public void setQuantidadetotal(int quantidadetotal) {
-        this.quantidadetotal = quantidadetotal;
+    
+    public void setQuantidadeTotal(int quantidadeTotal) {
+        this.quantidadeTotal = quantidadeTotal;
     }
-    public int getQuantidadelivre() {
-        return quantidadelivre;
+    
+    public int getQuantidadeLivre() {
+        return quantidadeLivre;
     }
-    public void setQuantidadelivre(int quantidadelivre) {
-        this.quantidadelivre = quantidadelivre;
+    
+    public void setQuantidadeLivre(int quantidadeLivre) {
+        this.quantidadeLivre = quantidadeLivre;
     }
-    public void alugar(String alugaroudevolver, Usuario usuario){
-        if (alugaroudevolver == "alugar" & quantidadelivre > 0) {
-            quantidadelivre = quantidadelivre-1;
-            listaalugado.add(usuario); 
-        } else if(alugaroudevolver == "alugar" & quantidadelivre == 0){
-             addfila(usuario);
-        }
-         else if(alugaroudevolver == "devolver" & quantidadelivre != quantidadetotal){
-            listaalugado.remove(usuario);
-            if (!filaaluguel.isEmpty()) {
-                listaalugado.add(filaaluguel.poll()); 
-            }else{
-                quantidadelivre = quantidadelivre+1;
+    
+    public void alugarLivro(String alugarOuDevolver, Usuario usuario){
+        if (alugarOuDevolver.equals("alugar") && quantidadeLivre > 0) {
+            quantidadeLivre--;
+        } else if(alugarOuDevolver.equals("alugar") && quantidadeLivre == 0){
+            addFila(usuario);
+        } else if(alugarOuDevolver.equals("devolver") && quantidadeLivre != quantidadeTotal){
+            if (!filaAluguel.isEmpty()) {
+                filaAluguel.poll();
+            } else {
+                quantidadeLivre++;
             }
-        }else{
-            System.out.println("algo deu errado, tente denovo");
+        } else {
+            System.out.println("Algo deu errado, tente novamente");
         }
     }
-    public void addfila(Usuario usuario){
-        filaaluguel.add(usuario);
-
+    
+    public void addFila(Usuario usuario){
+        filaAluguel.add(usuario);
     }
-
-
 }
+

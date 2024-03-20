@@ -1,20 +1,12 @@
 package fila;
 import java.util.ArrayList;
 import java.util.Date;
+
 public class Usuario {
     String nome, endereco;
-    ArrayList<String> livroPosse = new ArrayList(5);
+    ArrayList<String> livroPosse = new ArrayList<>(5);
     Date dataNascimento;
-
-    
-
-    public String mostrarInfo;{
-
-
-    };
-
-
-    //--------------------------------------------------------------------//
+    Date dataAtual;
 
     public String getNome() {
         return nome;
@@ -47,24 +39,5 @@ public class Usuario {
     public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
-
-    public String getCadastro() {
-        return cadastro;
-    }
-
-    public void setCadastro(String cadastro) {
-        this.cadastro = cadastro;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    };
-
-   
-
-
 }
+
