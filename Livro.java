@@ -42,13 +42,18 @@ public class Livro {
     public void alugarLivro(String alugarOuDevolver, Usuario usuario){
         if (alugarOuDevolver.equals("alugar") && quantidadeLivre > 0) {
             quantidadeLivre--;
+            System.out.println(usuario.getNome() + " alugou o livro " + titulo);
         } else if(alugarOuDevolver.equals("alugar") && quantidadeLivre == 0){
             addFila(usuario);
         } else if(alugarOuDevolver.equals("devolver") && quantidadeLivre != quantidadeTotal){
             if (!filaAluguel.isEmpty()) {
-                filaAluguel.poll();
+               Usuario esperando= filaAluguel.poll();
+                System.out.println(usuario.getNome() + " devolveu o livro " + titulo);
+                System.out.println(esperando.getNome() + " alugou o livro " + titulo+" pois estava na fila de espera");
+                
             } else {
                 quantidadeLivre++;
+                System.out.println(usuario.getNome() + " devolveu o livro " + titulo);
             }
         } else {
             System.out.println("Algo deu errado, tente novamente");
@@ -57,6 +62,8 @@ public class Livro {
     
     public void addFila(Usuario usuario){
         filaAluguel.add(usuario);
+        System.out.println(usuario.getNome() + " foi adicionado à fila de espera para o livro " + titulo);
     }
 }
+
 

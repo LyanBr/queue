@@ -1,4 +1,5 @@
 package fila;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Aluguel {
@@ -28,7 +29,14 @@ public class Aluguel {
     }
 
     public void devolverLivro(Usuario usuario, Livro livro){
-        livro.alugarLivro("devolver", usuario);
+        System.out.println(getMultaTotal(usuario));
+        if (multaTotal > 0) {
+            livro.alugarLivro("devolver", usuario); 
+        } else {
+            livro.alugarLivro("devolver", usuario);
+        }
+        
+        
     }
 
     public boolean disponibilidadeLivro(Livro livro){
@@ -36,19 +44,24 @@ public class Aluguel {
     }
 
     public void calcularMulta() {
-        Date hoje = new Date(); 
+        Calendar cal = Calendar.getInstance();
+        Date hoje = cal.getTime();
         if (hoje.after(dataFinal)) {
             long diferencaMillis = hoje.getTime() - dataFinal.getTime();
             long diferencaDias = diferencaMillis / (1000 * 60 * 60 * 24);
 
             multaTotal = diferencaDias * multaDiaria;
         } else {
-            multaTotal = 0.0f;
+            multaTotal = 0;
         }
     }
 
-    public float getMultaTotal() {
-        return multaTotal;
+    public String getMultaTotal(Usuario usuario) {
+        calcularMulta();
+        if (multaTotal > 0) {
+            return usuario.getNome()+ " seu prazo Expirou, você está com uma multa de: " + multaTotal;
+        } 
+        return "você está dentro do prazo";
     }
 }
 
