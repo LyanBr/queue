@@ -4,7 +4,15 @@ import java.util.LinkedList;
 
 public class Livro {
     String titulo, autor;
-    int quantidadeTotal, quantidadeLivre;
+    int quantidadeTotal, quantidadeLivre,idLivro;
+    public int getIdLivro() {
+        return idLivro;
+    }
+
+    public void setIdLivro(int idLivro) {
+        this.idLivro = idLivro;
+    }
+
     Queue<Usuario> filaAluguel = new LinkedList<>();
     
     public String getTitulo() {
@@ -43,13 +51,16 @@ public class Livro {
         if (alugarOuDevolver.equals("alugar") && quantidadeLivre > 0) {
             quantidadeLivre--;
             System.out.println(usuario.getNome() + " alugou o livro " + titulo);
+            usuario.listadelivros(titulo);
         } else if(alugarOuDevolver.equals("alugar") && quantidadeLivre == 0){
             addFila(usuario);
+            usuario.esperando(titulo);
         } else if(alugarOuDevolver.equals("devolver") && quantidadeLivre != quantidadeTotal){
             if (!filaAluguel.isEmpty()) {
                Usuario esperando= filaAluguel.poll();
                 System.out.println(usuario.getNome() + " devolveu o livro " + titulo);
                 System.out.println(esperando.getNome() + " alugou o livro " + titulo+" pois estava na fila de espera");
+                esperando.listadelivros(titulo);
                 
             } else {
                 quantidadeLivre++;

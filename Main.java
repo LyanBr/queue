@@ -1,10 +1,11 @@
 package fila;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
+import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
-        // Obtendo a data atual
+        // pegar as datas que vou usar no sistema
         Calendar cal = Calendar.getInstance();
         Date dataAtual = cal.getTime();
 
@@ -14,51 +15,258 @@ public class Main {
         cal.add(Calendar.DAY_OF_MONTH, -1);
         Date dataOntem = cal.getTime();
 
-        // Criando um novo objeto Calendar para calcular a data de 30 dias depois da data atual
         Calendar calLimite = Calendar.getInstance();
         calLimite.setTime(dataAtual);
         calLimite.add(Calendar.DAY_OF_MONTH, 30);
         Date dataLimite = calLimite.getTime();
 
-        // Criação de alguns usuários, livros e aluguéis para teste
-        Usuario usuario1 = new Usuario();
-        usuario1.setNome("João");
-        
-        Usuario usuario2 = new Usuario();
-        usuario2.setNome("Maria");
-        
-        Usuario usuario3 = new Usuario();
-        usuario3.setNome("Pedro");
-        
-        Usuario usuario4 = new Usuario();
-        usuario4.setNome("Ana");
-        
-        Usuario usuario5 = new Usuario();
-        usuario5.setNome("Carlos");
-        
-        Livro livro1 = new Livro();
-        livro1.setTitulo("O Senhor dos Anéis");
-        livro1.setQuantidadeTotal(1);
-        livro1.setQuantidadeLivre(1);
-        
-        Livro livro2 = new Livro();
-        livro2.setTitulo("Harry Potter");
-        livro2.setQuantidadeTotal(3);
-        livro2.setQuantidadeLivre(3);
+        Scanner scanner = new Scanner(System.in);
+        ArrayList<Usuario> usuarios = new ArrayList<>();
+        int contadorUsuarios = 0; // Inicializa o contador de usuários
+        ArrayList<String> usuariosRegistrados = new ArrayList<>();
+        ArrayList<String> senhasRegistradas = new ArrayList<>();
+        ArrayList<Aluguel> alugueís = new ArrayList<>();
+        int contadoralugueis = 0; // Inicializa o contador de usuários
+        ArrayList<Livro> livros = new ArrayList<>();
+        int contadorlivros = 0; // Inicializa o contador de usuários
+        Usuario usuarioLogado = null;
 
-        
-        Aluguel aluguel1 = new Aluguel(usuario1, livro1, dataTrintaDiasAtras, dataOntem );
-        aluguel1.alugarLivro(livro1, usuario1);
-        
-        Aluguel aluguel2 = new Aluguel(usuario2, livro1, dataAtual, dataLimite);
-        aluguel2.alugarLivro(livro1, usuario2);
-        
-        Aluguel aluguel3 = new Aluguel(usuario3, livro2, dataAtual, dataLimite);
-        aluguel3.alugarLivro(livro2, usuario3);
-        
+        // Adicione alguns usuários registrados para fins de demonstração
+        usuariosRegistrados.add("admin");
+        senhasRegistradas.add("admin");
+        Usuario admin= new Usuario();
+        admin.nome="admin";
+        admin.senha="admin";
+        usuarios[0]=admin;
+        usuariosRegistrados.add("sair");
+        Usuario sair= new Usuario();
+        sair.nome="sair";
+   
+       
 
-        aluguel1.devolverLivro(usuario1, livro1);
-        aluguel3.devolverLivro(usuario3, livro2);
+        while (true) {
+            int opcao = 0;
+             if (usuarioLogado==null) {
+                System.out.println("Bem-vindo ao sistema de gerenciamento de biblioteca!");
+                System.out.println("Selecione uma opção:");
+                System.out.println("1. Fazer login");
+                System.out.println("2. Fazer cadastro de usuário");
+                System.out.println("3. Sair");
+                opcao = scanner.nextInt();
+                switch (opcao) {
+                    case 1:
+                        // Login
+                        usuarioLogado = fazerLogin(scanner, usuariosRegistrados, senhasRegistradas, usuarios);
+                        break;
+                    case 2:
+                        // Cadastro de novo usuário
+                        Usuario novoUsuario = criarUsuario(contadorUsuarios); // Cria um novo usuário com o contador atual
+                        usuarios.add(novoUsuario); // Adiciona o novo usuário à lista de usuário
+                        usuariosRegistrados.add(novoUsuario.nome);
+                        senhasRegistradas.add(novoUsuario.senha);
+                        contadorUsuarios++; // Incrementa o contador para o próximo usuário
+                        usuarioLogado = novoUsuario; // Define o novo usuário como o usuário logado
+                        break;
+                    case 3:
+                        usuarioLogado=sair;
+                        System.out.println("Saindo do sistema...");
+                        return;
+                    default:
+                    System.out.println("Opção inválida. Por favor, selecione uma opção válida.");
+                }
+            }
+            else if(usuarioLogado.nome!="sair"){
+                if (usuarioLogado.nome=="admin") {
+                    System.out.println("Bem vindo, "+ usuarioLogado.nome+ " Escolha uma opção.");
+                    System.out.println("1. Cadastrar livro");
+                    System.out.println("2. Cadastrar Usuario");
+                    System.out.println("3. verificar disponibilidade de Livro");
+                    System.out.println("4. Sair");
+                    System.out.println("5. Deslogar");
+                    opcao = scanner.nextInt();
+                    switch (opcao) {
+
+                        case 1:
+                           Livro novolivro = criarLivro(contadorlivros);
+                           livros.add(novolivro);
+                            break;
+                        case 2:
+                            // Cadastro de novo usuário
+                            Usuario novoUsuario = criarUsuario(contadorUsuarios); // Cria um novo usuário com o contador atual
+                            usuarios.add(novoUsuario); // Adiciona o novo usuário à lista de usuário
+                            usuariosRegistrados.add(novoUsuario.nome);
+                            senhasRegistradas.add(novoUsuario.senha);
+                            contadorUsuarios++; // Incrementa o contador para o próximo usuário
+                        
+                            break;
+                        case 3:
+                            Scanner ler = new Scanner(System.in);
+                            String livroprocurado= ler.nextLine();
+                            Livro livro= selecionarlivro(livroprocurado, livros);
+                             if (livro.getQuantidadeLivre() > 0) {
+                                System.out.println("O livro "+livro+" Têm "+livro.getQuantidadeLivre()+" Cópias disponíveis.");
+                                
+                             } else {
+                                System.out.println("O livro "+livro+" Não têm mais cópias disponíveis.");
+                             }
+                          
+                           
+                            break;
+                        case 4:
+                            usuarioLogado=sair;
+                            System.out.println("Saindo do sistema...");
+                            return;
+                        case 5:
+                            usuarioLogado=null;
+                            System.out.println("Deslogado...");
+                            return;    
+                        default:
+                            System.out.println("Opção inválida. Por favor, selecione uma opção válida.");
+                    }
+                    
+                } else {
+                    System.out.println("Bem vindo, "+ usuarioLogado.nome+ " Escolha uma opção.");
+                    System.out.println("1. verificar livros alugados");
+                    System.out.println("2. verificar livros em espera para aluguel");
+                    System.out.println("3. Alugar livro");
+                    System.out.println("4. Devolver livro");
+                    System.out.println("5. Sair");
+                    System.out.println("6. Deslogar");
+                    opcao = scanner.nextInt();
+                switch (opcao) {
+
+                    case 1:
+                      System.out.println(usuarioLogado.nome+" Você têm os seguintes Livros alugados: " +usuarioLogado.livroPosse);
+                        break;
+                    case 2:
+                    System.out.println(usuarioLogado.nome+" Você está na fila de espera dos seguintes livros: " +usuarioLogado.livrosesperando);
+                        break;
+                    case 3:
+                      Scanner ler = new Scanner(System.in);
+                      String livroprocurado= ler.nextLine();
+                      Livro livro= selecionarlivro(livroprocurado, livros);
+                      Aluguel novoAluguel = criarAluguel(usuarioLogado, livro, dataAtual, dataLimite, contadoralugueis); // Cria um novo usuário com o contador atual
+                      alugueís.add(novoAluguel); // Adiciona o novo usuário à lista de usuário
+                       
+                        break;
+                    case 4:
+                        // Implemente o código para devolver livro
+                        break;
+                    case 5:
+                        usuarioLogado=sair;
+                        System.out.println("Saindo do sistema...");
+                        return;
+                    case 6:
+                        usuarioLogado=null;
+                        System.out.println("Deslogado...");
+                        return;    
+                    default:
+                        System.out.println("Opção inválida. Por favor, selecione uma opção válida.");
+                }
+                    
+                }
+                
+
+            }
+            
+        }
     }
+
+    private static Livro selecionarlivro(String livroprocurado, ArrayList<Livro> livros) {
+        Livro livroEncontrado = null;
+        for (Livro livro : livros) {
+            if (livro.getTitulo().equals(livroprocurado)) {
+                livroEncontrado = livro;
+                return livroEncontrado;
+            }
+        
+        
+        
+    }
+    return livroEncontrado;
 }
 
+    public static Usuario fazerLogin(Scanner scanner, ArrayList<String> usuariosRegistrados, ArrayList<String> senhasRegistradas, ArrayList<Usuario> usuarios) {
+        System.out.println("Login:");
+        System.out.print("Usuário: ");
+        String usuario = scanner.next();
+        System.out.print("Senha: ");
+        String senha = scanner.next();
+        Usuario usuarioEncontrado = null;
+        for(Usuario u : usuarios){
+            if (u.getNome()==usuario && u.getsenha()==senha) {
+                System.out.println("Login bem-sucedido!");
+                usuarioEncontrado=u;
+                return usuarioEncontrado;
+                
+            }
+            else{
+                System.out.println("Usuário ou senha incorretos.");
+                return null;
+            }
+        }
+        System.out.println("fudeu");
+        return null;
+    }
+
+    public static Usuario criarUsuario(int numeroUsuario) {
+        Scanner scanner = new Scanner(System.in);
+        Usuario novoUsuario = new Usuario();
+        
+        System.out.println("Cadastro de novo usuário:");
+
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
+        novoUsuario.setNome(nome);
+
+        System.out.print("Endereço: ");
+        String endereco = scanner.nextLine();
+        novoUsuario.setEndereco(endereco);
+
+        System.out.print("senha: ");
+        String senha = scanner.nextLine();
+        novoUsuario.setsenha(senha);
+        
+
+        System.out.println("Usuário cadastrado com sucesso! Número de usuário: " + numeroUsuario);
+
+        return novoUsuario;
+    }
+    public static Aluguel criarAluguel(Usuario usuario, Livro livro, Date dataaluguel, Date dataLimite,int contador) {
+        Scanner scanner = new Scanner(System.in);
+        Aluguel novoAluguel = new Aluguel(usuario,livro,dataaluguel,dataLimite);
+
+        return novoAluguel;
+    }
+    public static Livro criarLivro(int numeroLivro) {
+        Scanner scanner = new Scanner(System.in);
+        Livro novoLivro = new Livro();
+        
+        System.out.println("Cadastro de novo Livro:");
+
+        novoLivro.setIdLivro(numeroLivro);
+
+        System.out.print("titulo: ");
+        String nome = scanner.nextLine();
+        novoLivro.setTitulo(nome);
+
+        System.out.print("Autor: ");
+        String autor = scanner.nextLine();
+        novoLivro.setAutor(autor);
+
+        System.out.print("Quantidade: ");
+        int quantidade = scanner.nextInt();
+        novoLivro.setQuantidadeTotal(quantidade);
+        novoLivro.setQuantidadeLivre(quantidade);
+        
+        
+
+        System.out.println("Livro cadastrado com sucesso! Número de Livro: " + numeroLivro);
+
+        return novoLivro;
+    }
+
+
+        
+ 
+}

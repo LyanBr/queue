@@ -21,10 +21,11 @@ public class Aluguel {
     }
 
     public void alugarLivro(Livro livro, Usuario usuario){
-        if (disponibilidadeLivro(livro)) {
+        if (disponibilidadeLivro(livro) && usuario.livroPosse.size() < 5) {
             livro.alugarLivro("alugar", usuario);
-        } else {
-            livro.addFila(usuario);
+            
+        } else if (disponibilidadeLivro(livro) && usuario.livroPosse.size() == 5) {
+            System.out.println("você não pode mais alugar livros, devolva algum primeiro.");
         }
     }
 

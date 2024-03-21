@@ -3,11 +3,16 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Usuario {
-    String nome, endereco;
+    String nome, endereco, senha;
     ArrayList<String> livroPosse = new ArrayList<>(5);
-    Date dataNascimento;
-    Date dataAtual;
-
+    ArrayList<String> livrosesperando= new ArrayList<>();
+    
+    public void listadelivros(String nomelivro){
+         livroPosse.add(nomelivro);
+    }
+    public void esperando(String nomeLivro){
+          livrosesperando.add(nomeLivro);
+    }
     public String getNome() {
         return nome;
     }
@@ -32,12 +37,12 @@ public class Usuario {
         this.livroPosse = livroPosse;
     }
 
-    public Date getDataNascimento() {
-        return dataNascimento;
+    public String getsenha() {
+        return senha;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
-        this.dataNascimento = dataNascimento;
+    public void setsenha(String senha) {
+        this.senha = senha;
     }
 }
 

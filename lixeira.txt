@@ -1,0 +1,45 @@
+ // Criação das classes de usuários, livros e aluguéis para demonstrar
+        Usuario usuario1 = new Usuario();
+        usuario1.setNome("João");
+        
+        Usuario usuario2 = new Usuario();
+        usuario2.setNome("Maria");
+        
+        Usuario usuario3 = new Usuario();
+        usuario3.setNome("Pedro");
+        
+        Usuario usuario4 = new Usuario();
+        usuario4.setNome("Ana");
+        
+        Usuario usuario5 = new Usuario();
+        usuario5.setNome("Carlos");
+        
+        Livro livro1 = new Livro();
+        livro1.setTitulo("O Senhor dos Anéis");
+        livro1.setQuantidadeTotal(1);
+        livro1.setQuantidadeLivre(1);
+        
+        Livro livro2 = new Livro();
+        livro2.setTitulo("Harry Potter");
+        livro2.setQuantidadeTotal(3);
+        livro2.setQuantidadeLivre(3);
+
+        
+       
+        Aluguel aluguel1 = new Aluguel(usuario1, livro1, dataTrintaDiasAtras, dataOntem );
+        aluguel1.alugarLivro(livro1, usuario1);
+        
+        Aluguel aluguel2 = new Aluguel(usuario2, livro1, dataAtual, dataLimite);
+        aluguel2.alugarLivro(livro1, usuario2);
+        
+        Aluguel aluguel3 = new Aluguel(usuario3, livro2, dataAtual, dataLimite);
+        aluguel3.alugarLivro(livro2, usuario3);
+
+        Aluguel aluguel4 = new Aluguel(usuario1, livro2, dataAtual, dataLimite );
+        aluguel1.alugarLivro(livro2, usuario1);
+
+        System.out.println(usuario1.nome+" Você têm os seguintes Livros alugados: " +usuario1.livroPosse);
+        
+
+        aluguel1.devolverLivro(usuario1, livro1);
+        aluguel3.devolverLivro(usuario3, livro2);
